@@ -71,3 +71,36 @@ paraphrase_multilingual_MiniLM_L12_v2 = ModelMeta(
     revision=None,  # can be any
     release_date="2019-11-01",  # release date of paper
 )
+
+rubert_tiny2 = ModelMeta(
+    name="cointegrated/rubert-tiny2",
+    languages=["rus_Cyrl","eng_Latn"],
+    open_source=True,
+    revision=15,  # can be any
+    release_date="2021-10-28",
+)
+
+rubert_tiny = ModelMeta(
+    name="cointegrated/rubert-tiny",
+    languages=["rus_Cyrl","eng_Latn"],
+    open_source=True,
+    revision=27,  # can be any
+    release_date="2021-05-24",
+)
+
+
+sbert_large_nlu_ru = ModelMeta(
+    name="ai-forever/sbert_large_nlu_ru",
+    languages=["rus_Cyrl"],
+    open_source=True,
+    revision=20,  # can be any
+    release_date="2020-11-20",
+)
+
+sbert_large_mt_nlu_ru = ModelMeta(
+    name="ai-forever/sbert_large_mt_nlu_ru",
+    languages=["rus_Cyrl"],
+    open_source=True,
+    revision=9,  # can be any
+    release_date="2021-05-18",
+)
