@@ -1,0 +1,62 @@
+{
+  "dataset_revision": "2fe05ee6b5832cda29f2ef7aaad7b7fe6a3609eb",
+  "evaluation_time": 9.344550848007202,
+  "kg_co2_emissions": null,
+  "mteb_version": "1.12.13",
+  "scores": {
+    "test": [
+      {
+        "accuracy": 0.76396484375,
+        "f1": 0.763481596984745,
+        "hf_subset": "default",
+        "languages": [
+          "rus-Cyrl"
+        ],
+        "main_score": 0.76396484375,
+        "scores_per_experiment": [
+          {
+            "accuracy": 0.7763671875,
+            "f1": 0.7759226168676733
+          },
+          {
+            "accuracy": 0.76123046875,
+            "f1": 0.759019469166557
+          },
+          {
+            "accuracy": 0.76953125,
+            "f1": 0.7704155845496943
+          },
+          {
+            "accuracy": 0.7578125,
+            "f1": 0.757782808062934
+          },
+          {
+            "accuracy": 0.76904296875,
+            "f1": 0.7691632155879722
+          },
+          {
+            "accuracy": 0.75,
+            "f1": 0.7485648809910487
+          },
+          {
+            "accuracy": 0.77197265625,
+            "f1": 0.7733257246266981
+          },
+          {
+            "accuracy": 0.71533203125,
+            "f1": 0.7121094248272319
+          },
+          {
+            "accuracy": 0.796875,
+            "f1": 0.7972223503807605
+          },
+          {
+            "accuracy": 0.771484375,
+            "f1": 0.7712898947868815
+          }
+        ]
+      }
+    ]
+  },
+  "task_name": "HeadlineClassification"
+}
