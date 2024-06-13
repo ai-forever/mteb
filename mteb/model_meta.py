@@ -1,98 +1,106 @@
-from __future__ import annotations
+"""Implementation of Sentence Transformers model validated in MTEB."""
 
-from datetime import date
-from functools import partial
-from typing import Any, Callable, Literal
+from mteb.model_meta import ModelMeta
 
-from pydantic import BaseModel, BeforeValidator, TypeAdapter
-from sentence_transformers import SentenceTransformer
-from typing_extensions import Annotated
+all_MiniLM_L6_v2 = ModelMeta(
+    name="sentence-transformers/all-MiniLM-L6-v2",
+    languages=["eng-Latn"],
+    open_source=True,
+    revision=None,  # can be any
+    release_date="2021-08-30",
+)
 
-from mteb.encoder_interface import Encoder, EncoderWithQueryCorpusEncode
+paraphrase_multilingual_MiniLM_L12_v2 = ModelMeta(
+    name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    languages=[
+        "ara_Arab",
+        "bul_Cyrl",
+        "cat_Latn",
+        "ces_Latn",
+        "dan_Latn",
+        "deu_Latn",
+        "ell_Grek",
+        "eng_Latn",
+        "spa_Latn",
+        "est_Latn",
+        "fas_Arab",
+        "fin_Latn",
+        "fra_Latn",
+        "fra_Latn",
+        "glg_Latn",
+        "guj_Gujr",
+        "heb_Hebr",
+        "hin_Deva",
+        "hrv_Latn",
+        "hun_Latn",
+        "hye_Armn",
+        "ind_Latn",
+        "ita_Latn",
+        "jpn_Jpan",
+        "kat_Geor",
+        "kor_Hang",
+        "kur_Arab",
+        "lit_Latn",
+        "lav_Latn",
+        "mkd_Cyrl",
+        "mon_Cyrl",
+        "mar_Deva",
+        "msa_Latn",
+        "mya_Mymr",
+        "nob_Latn",
+        "nld_Latn",
+        "pol_Latn",
+        "por_Latn",
+        "por_Latn",
+        "ron_Latn",
+        "rus_Cyrl",
+        "slk_Latn",
+        "slv_Latn",
+        "sqi_Latn",
+        "srp_Cyrl",
+        "swe_Latn",
+        "tha_Thai",
+        "tur_Latn",
+        "ukr_Cyrl",
+        "urd_Arab",
+        "vie_Latn",
+        "zho_Hans",
+        "zho_Hant",
+    ],
+    open_source=True,
+    revision=None,  # can be any
+    release_date="2019-11-01",  # release date of paper
+)
 
-from .languages import ISO_LANGUAGE_SCRIPT
+rubert_tiny2 = ModelMeta(
+    name="cointegrated/rubert-tiny2",
+    languages=["rus_Cyrl"],
+    open_source=True,
+    revision="dad72b8f77c5eef6995dd3e4691b758ba56b90c3",  # can be any
+    release_date="2021-10-28",
+)
 
-Frameworks = Literal["Sentence Transformers", "PyTorch"]
-
-pastdate_adapter = TypeAdapter(date)
-STR_DATE = Annotated[
-    str, BeforeValidator(lambda value: str(pastdate_adapter.validate_python(value)))
-]  # Allows the type to be a string, but ensures that the string is a valid date
-
-
-def sentence_transformers_loader(
-    model_name: str, revision: str, **kwargs
-) -> SentenceTransformer:
-    return SentenceTransformer(
-        model_name_or_path=model_name, revision=revision, **kwargs
-    )
-
-
-def get_loader_name(
-    loader: Callable[..., Encoder | EncoderWithQueryCorpusEncode] | None,
-) -> str | None:
-    if loader is None:
-        return None
-    if hasattr(loader, "func"):  # partial class wrapper
-        return loader.func.__name__
-    return loader.__name__
+rubert_tiny = ModelMeta(
+    name="cointegrated/rubert-tiny",
+    languages=["rus_Cyrl"],
+    open_source=True,
+    revision="5441c5ea8026d4f6d7505ec004845409f1259fb1",  # can be any
+    release_date="2021-05-24",
+)
 
 
-class ModelMeta(BaseModel):
-    """The model metadata object.
+sbert_large_nlu_ru = ModelMeta(
+    name="ai-forever/sbert_large_nlu_ru",
+    languages=["rus_Cyrl"],
+    open_source=True,
+    revision="af977d5dfa46a3635e29bf0ef383f2df2a08d47a",  # can be any
+    release_date="2020-11-20",
+)
 
-    Attributes:
-        loader: the function that loads the model. If None it will just default to loading the model using the sentence transformer library.
-        name: The name of the model, ideally the name on huggingface.
-        n_parameters: The number of parameters in the model, e.g. 7_000_000 for a 7M parameter model. Can be None if the the number of parameters is not known (e.g. for proprietary models) or
-            if the loader returns a SentenceTransformer model from which it can be derived.
-        memory_usage: The amount of memory the model uses in GB. Can be None if the memory usage is not known (e.g. for proprietary models).
-        max_tokens: The maximum number of tokens the model can handle. Can be None if the maximum number of tokens is not known (e.g. for proprietary
-            models).
-        embed_dim: The dimension of the embeddings produced by the model. Currently all models are assumed to produce fixed-size embeddings.
-        revision: The revision number of the model. If None it is assumed that the metadata (including the loader) is valid for all revisions of the model.
-        release_date: The date the model's revision was released.
-        license: The license under which the model is released. Required if open_source is True.
-        open_source: Whether the model is open source or proprietary.
-        framework: The framework the model is implemented in, can be a list of frameworks e.g. `["Sentence Transformers", "PyTorch"]`.
-        languages: The languages the model is intended for specified as a 3 letter language code followed by a script code e.g. "eng-Latn" for English
-            in the Latin script.
-    """
-
-    name: str | None
-    revision: str | None
-    release_date: STR_DATE | None
-    languages: list[ISO_LANGUAGE_SCRIPT] | None
-    loader: Callable[..., Encoder | EncoderWithQueryCorpusEncode] | None = None
-    n_parameters: int | None = None
-    memory_usage: float | None = None
-    max_tokens: int | None = None
-    embed_dim: int | None = None
-    license: str | None = None
-    open_source: bool | None = None
-    framework: list[Frameworks] = []
-
-    def to_dict(self):
-        dict_repr = self.model_dump()
-        loader = dict_repr.pop("loader", None)
-        dict_repr["loader"] = get_loader_name(loader)
-        return dict_repr
-
-    def load_model(self, **kwargs: Any) -> Encoder | EncoderWithQueryCorpusEncode:
-        if self.loader is None:
-            loader = partial(
-                sentence_transformers_loader,
-                model_name=self.name,
-                revision=self.revision,
-                **kwargs,
-            )
-        else:
-            loader = self.loader
-
-        model: Encoder | EncoderWithQueryCorpusEncode = loader(**kwargs)  # type: ignore
-        return model
-
-    def model_name_as_path(self) -> str:
-        if self.name is None:
-            raise ValueError("Model name is not set")
-        return self.name.replace("/", "__").replace(" ", "_")
+sbert_large_mt_nlu_ru = ModelMeta(
+    name="ai-forever/sbert_large_mt_nlu_ru",
+    languages=["rus_Cyrl"],
+    open_source=True,
+    revision="05300876c2b83f46d3ddd422a7f17e45cf633bb0",  # can be any
+    release_date="2021-05-18",
+)
