@@ -54,6 +54,7 @@ class ModelMeta(BaseModel):
         release_date: The date the model's revision was released.
         license: The license under which the model is released. Required if open_source is True.
         open_source: Whether the model is open source or proprietary.
+        distance_metric: The distance metric used by the model.
         framework: The framework the model is implemented in, can be a list of frameworks e.g. `["Sentence Transformers", "PyTorch"]`.
         languages: The languages the model is intended for specified as a 3 letter language code followed by a script code e.g. "eng-Latn" for English
             in the Latin script.
@@ -70,12 +71,13 @@ class ModelMeta(BaseModel):
     embed_dim: int | None = None
     license: str | None = None
     open_source: bool | None = None
+    similarity_fn_name: str | None = None
     framework: list[Frameworks] = []
 
     def to_dict(self):
         dict_repr = self.model_dump()
         loader = dict_repr.pop("loader", None)
-        dict_repr["loader"] = get_loader_name(loader)
+        dict_repr["loader"] = loader.func.__name__ if loader is not None else None
         return dict_repr
 
     def load_model(self, **kwargs: Any) -> Encoder | EncoderWithQueryCorpusEncode:
