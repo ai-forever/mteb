@@ -1,0 +1,8 @@
+{
+  "dataset_revision": "fad2c6e8459f9e1c45d9315f4953d921437d70f8",
+  "evaluation_time": 1.4543533325195312e-05,
+  "kg_co2_emissions": null,
+  "mteb_version": "1.12.25",
+  "scores": {},
+  "task_name": "MassiveScenarioClassification"
+}
