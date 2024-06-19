@@ -104,11 +104,3 @@ sbert_large_mt_nlu_ru = ModelMeta(
     revision="05300876c2b83f46d3ddd422a7f17e45cf633bb0",  # can be any
     release_date="2021-05-18",
 )
-
-user_base = ModelMeta(
-    name="deepvk/USER-base",
-    languages=["rus_Cyrl"],
-    open_source=True,
-    revision="436a489a2087d61aa670b3496a9915f84e46c861",  # can be any
-    release_date="2024-06-10",
-)
